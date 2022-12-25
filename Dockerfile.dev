@@ -1,0 +1,24 @@
+# Get the base image 
+FROM node:alpine
+
+# Switch to node user instead of default root user 
+USER node
+
+# Create app dir as node user 
+RUN mkdir -p /home/node/app
+
+#  Change to working directory 
+WORKDIR '/home/node/app'
+
+
+# Install some dependencties
+# Copy package.json as node user 
+COPY --chown=node:node ./package.json ./
+RUN npm install
+
+
+# Copy the rest of the source 
+COPY --chown=node:node ./ ./
+
+# Setup the start-up command 
+CMD ["npm", "run", "start"]
